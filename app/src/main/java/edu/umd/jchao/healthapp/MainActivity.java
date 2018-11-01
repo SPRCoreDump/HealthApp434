@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
                     mTextMessage.setText("Calednar");
                     return true;
                 case R.id.navigation_settings:
-                    mTextMessage.setText("Settings");
+                    startActivity(new Intent(MainActivity.this, Settings.class));
                     return true;
             }
             return false;

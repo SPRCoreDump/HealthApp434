@@ -1,5 +1,6 @@
 package edu.umd.jchao.healthapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -24,7 +25,7 @@ public class search extends AppCompatActivity {
                     mTextMessage.setText("Calednar");
                     return true;
                 case R.id.navigation_settings:
-                    mTextMessage.setText("Settings");
+                    startActivity(new Intent(search.this, Settings.class));
                     return true;
             }
             return false;
