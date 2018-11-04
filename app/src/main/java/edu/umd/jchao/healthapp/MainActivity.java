@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
                     mTextMessage.setText(R.string.title_home);
                     return true;
                 case R.id.navigation_cal:
-                    mTextMessage.setText("Calednar");
+                    mTextMessage.setText("Calendar");
                     return true;
                 case R.id.navigation_settings:
                     startActivity(new Intent(MainActivity.this, Settings.class));
@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        Button btn = (Button)findViewById(R.id.New);
+        Button btn = (Button)findViewById(R.id.NewFood);
 
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
