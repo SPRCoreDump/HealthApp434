@@ -75,7 +75,7 @@
         android:text="Net Calories: 1000"
         android:textAlignment="center"
         android:textSize="35dp"
-        
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.516"

@@ -24,9 +24,10 @@ public class MainActivity extends AppCompatActivity {
                     mTextMessage.setText(R.string.title_home);
                     return true;
                 case R.id.navigation_cal:
-                    mTextMessage.setText("Calendar");
+                    mTextMessage.setText(R.string.title_cal);
                     return true;
                 case R.id.navigation_settings:
+                    mTextMessage.setText(R.string.title_settings);
                     startActivity(new Intent(MainActivity.this, Settings.class));
                     return true;
             }
