@@ -5,7 +5,7 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Search">
+    tools:context=".search2">
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"
@@ -20,7 +20,7 @@
         app:menu="@menu/navigation" />
 
     <SearchView
-        android:id="@+id/foodSearch"
+        android:id="@+id/exSearch"
         android:layout_width="374dp"
         android:layout_height="69dp"
         android:layout_marginStart="4dp"
@@ -29,7 +29,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ListView
-        android:id="@+id/results"
+        android:id="@+id/exResults"
         android:layout_width="273dp"
         android:layout_height="361dp"
         android:layout_marginStart="8dp"
@@ -41,7 +41,6 @@
         app:layout_constraintHorizontal_bias="0.084"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.574" />
-
+        app:layout_constraintVertical_bias="0.641" />
 
 </android.support.constraint.ConstraintLayout>
