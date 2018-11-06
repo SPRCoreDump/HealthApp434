@@ -19,10 +19,12 @@ public class Settings extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    mTextMessage.setText(R.string.title_home);
+                    //mTextMessage.setText(R.string.title_home);
+                    startActivity(new Intent(Settings.this, MainActivity.class));
                     return true;
                 case R.id.navigation_cal:
-                    mTextMessage.setText("Calednar");
+                    //mTextMessage.setText("Calednar");
+                    startActivity(new Intent(Settings.this, MainActivity.class));
                     return true;
                 case R.id.navigation_settings:
                     startActivity(new Intent(Settings.this, Settings.class));

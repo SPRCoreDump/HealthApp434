@@ -21,13 +21,13 @@ public class MainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    mTextMessage.setText(R.string.title_home);
+                    //mTextMessage.setText(R.string.title_home);
                     return true;
                 case R.id.navigation_cal:
-                    mTextMessage.setText(R.string.title_cal);
+                    //mTextMessage.setText(R.string.title_cal);
                     return true;
                 case R.id.navigation_settings:
-                    mTextMessage.setText(R.string.title_settings);
+                    //mTextMessage.setText(R.string.title_settings);
                     startActivity(new Intent(MainActivity.this, Settings.class));
                     return true;
             }
@@ -44,12 +44,20 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        Button btn = (Button)findViewById(R.id.NewFood);
+        Button foodBtn = (Button)findViewById(R.id.NewFood);
+        Button activityBtn = (Button)findViewById(R.id.NewActivity);
 
-        btn.setOnClickListener(new View.OnClickListener() {
+        foodBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, search.class));
+                startActivity(new Intent(MainActivity.this, Search.class));
+            }
+        });
+
+        activityBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, Search.class));
             }
         });
     }

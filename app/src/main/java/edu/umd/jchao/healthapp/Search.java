@@ -1,5 +1,6 @@
 package edu.umd.jchao.healthapp;
 
+import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -7,8 +8,9 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.SearchView;
 
-public class search extends AppCompatActivity {
+public class Search extends AppCompatActivity {
 
     private TextView mTextMessage;
 
@@ -25,7 +27,7 @@ public class search extends AppCompatActivity {
                     mTextMessage.setText("Calednar");
                     return true;
                 case R.id.navigation_settings:
-                    startActivity(new Intent(search.this, Settings.class));
+                    startActivity(new Intent(Search.this, Settings.class));
                     return true;
             }
             return false;
@@ -40,6 +42,13 @@ public class search extends AppCompatActivity {
         mTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        // Get the SearchView and set the searchable configuration
+        SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
+        SearchView searchView = (SearchView) findViewById(R.id.searchView);
+        // Assumes current activity is the searchable activity
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
     }
 
 }
