@@ -78,7 +78,7 @@ public class Settings extends AppCompatActivity {
         save.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if(getInput()) {
-                    Tdee.setText(tdee(Integer.parseInt(biometrics[3]), false)+"\ncalories to maintain current weight");
+                    Tdee.setText(tdee(Integer.parseInt(biometrics[3]), false)+"\n calories per day");
                     writeCSV(biometrics, "Biometrics.csv");
                 }
                 else{
