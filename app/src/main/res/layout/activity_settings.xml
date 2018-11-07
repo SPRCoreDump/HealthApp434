@@ -93,9 +93,11 @@
             android:layout_width="wrap_content"
             android:layout_below="@id/weight"
             android:paddingStart="32dp"
+            android:checkedButton="@id/male_button"
             android:layout_height="wrap_content">
 
             <RadioButton
+                android:id="@+id/male_button"
                 android:text="Male"
                 android:textColor="@color/colorPrimaryDark"
                 android:fontFamily="@string/title_dashboard"
@@ -103,6 +105,7 @@
                 android:layout_height="wrap_content" />
 
             <RadioButton
+                android:id="@+id/female_button"
                 android:text="Female"
                 android:textColor="@color/colorPrimaryDark"
                 android:fontFamily="@string/title_dashboard"
@@ -111,7 +114,7 @@
 
         </RadioGroup>
         <Button
-            android:id="@+id/button"
+            android:id="@+id/save_button"
             android:layout_below="@id/gender_selector"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -121,6 +124,19 @@
             android:layout_marginBottom="8dp"
             android:textColor="@color/colorPrimaryDark"
             android:text="Save" />
+
+        <TextView
+            android:id="@+id/TDEE_display"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:layout_below="@id/save_button"
+            android:textAlignment="center"
+            android:textSize="24dp" />
 
     </RelativeLayout>
 
