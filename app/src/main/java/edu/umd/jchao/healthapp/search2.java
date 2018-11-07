@@ -88,7 +88,9 @@ public class search2 extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                //Log.e("onQueryTextChange", "called");
+                if (newText.isEmpty()) {
+                    results.clear();
+                }
                 return false;
             }
 

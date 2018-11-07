@@ -90,7 +90,11 @@ public class Search extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                //Log.e("onQueryTextChange", "called");
+                if(newText.isEmpty())
+                {
+                    results.clear();
+                    itemsAdapter.notifyDataSetChanged();
+                }
                 return false;
             }
 

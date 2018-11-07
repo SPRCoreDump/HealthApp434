@@ -113,6 +113,21 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int id) {
                         String rmv = (String) adapter.getItemAtPosition(position);
                         todayList.remove(rmv);
+                        String[] k = rmv.split("\n");
+                        String key = k[0];
+                        String cal = Nutrition.get(key);
+                        if(cal == null) {
+                            cal = Exercise.get(key);
+                            netCalories += Integer.parseInt(cal);
+                        }
+                        else
+                            netCalories -= Integer.parseInt(cal);
+
+                        TextView tv1 = findViewById(R.id.calories);
+                        tv1.setText("Net Calories: " + netCalories);
+
+
+
                         todayAdapter.notifyDataSetChanged();
                     }
                 });
