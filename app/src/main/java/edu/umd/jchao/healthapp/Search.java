@@ -32,11 +32,11 @@ public class Search extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    mTextMessage.setText(R.string.title_home);
+                    //mTextMessage.setText(R.string.title_home);
                     startActivity(new Intent(Search.this, MainActivity.class));
                     return true;
                 case R.id.navigation_cal:
-                    mTextMessage.setText("Calendar");
+                    //mTextMessage.setText("Calendar");
                     startActivity(new Intent(Search.this, Calendar.class));
                     return true;
                 case R.id.navigation_settings:
