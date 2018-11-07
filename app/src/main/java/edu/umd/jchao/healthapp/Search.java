@@ -33,9 +33,11 @@ public class Search extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                     mTextMessage.setText(R.string.title_home);
+                    startActivity(new Intent(Search.this, MainActivity.class));
                     return true;
                 case R.id.navigation_cal:
-                    mTextMessage.setText("Calednar");
+                    mTextMessage.setText("Calendar");
+                    startActivity(new Intent(Search.this, Calendar.class));
                     return true;
                 case R.id.navigation_settings:
                     startActivity(new Intent(Search.this, Settings.class));

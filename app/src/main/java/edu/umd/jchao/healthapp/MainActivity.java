@@ -3,7 +3,6 @@ package edu.umd.jchao.healthapp;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AlertDialog;
@@ -19,7 +18,6 @@ import android.widget.TextView;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -45,9 +43,11 @@ public class MainActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                     //mTextMessage.setText(R.string.title_home);
+                    startActivity(new Intent(MainActivity.this, MainActivity.class));
                     return true;
                 case R.id.navigation_cal:
                     //mTextMessage.setText(R.string.title_cal);
+                    startActivity(new Intent(MainActivity.this, Calendar.class));
                     return true;
                 case R.id.navigation_settings:
                     //mTextMessage.setText(R.string.title_settings);

@@ -24,7 +24,7 @@ public class Settings extends AppCompatActivity {
                     return true;
                 case R.id.navigation_cal:
                     //mTextMessage.setText("Calednar");
-                    startActivity(new Intent(Settings.this, MainActivity.class));
+                    startActivity(new Intent(Settings.this, Calendar.class));
                     return true;
                 case R.id.navigation_settings:
                     startActivity(new Intent(Settings.this, Settings.class));
