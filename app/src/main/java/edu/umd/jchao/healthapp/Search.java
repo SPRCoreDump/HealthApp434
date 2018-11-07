@@ -118,6 +118,7 @@ public class Search extends AppCompatActivity {
 
     private void doMySearch(String q) {
         results.clear();
+        
 
         for(String s : MainActivity.Nutrition.keySet()) {
             if (s.contains(q)) {
