@@ -115,7 +115,9 @@ public class search2 extends AppCompatActivity {
         results.clear();
 
         for(String s : MainActivity.Exercise.keySet()) {
-            if (s.contains(q)) {
+            String[] splited = s.split(" ");
+
+            if (splited[0].contains(q)) {
                 results.add(s + "\n" + MainActivity.Exercise.get(s) + " Calories");
             }
             else
