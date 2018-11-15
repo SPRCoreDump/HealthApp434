@@ -12,12 +12,12 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.SearchView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class Search extends AppCompatActivity {
+public class SearchEx extends AppCompatActivity {
 
     private TextView mTextMessage;
     private ListView lv;
@@ -33,67 +33,63 @@ public class Search extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                     //mTextMessage.setText(R.string.title_home);
-                    startActivity(new Intent(Search.this, MainActivity.class));
+                    startActivity(new Intent(SearchEx.this, MainActivity.class));
                     return true;
                 case R.id.navigation_cal:
                     //mTextMessage.setText("Calendar");
-                    startActivity(new Intent(Search.this, Calendar.class));
+                    startActivity(new Intent(SearchEx.this, Calendar.class));
                     return true;
                 case R.id.navigation_settings:
-                    startActivity(new Intent(Search.this, Settings.class));
+                    startActivity(new Intent(SearchEx.this, Settings.class));
                     return true;
             }
             return false;
         }
     };
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search);
+        setContentView(R.layout.activity_search_exercise);
 
         mTextMessage = (TextView) findViewById(R.id.message);
-        lv = findViewById(R.id.results);
-        s = findViewById(R.id.foodSearch);
+        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        lv = findViewById(R.id.exResults);
+        s = findViewById(R.id.exSearch);
 
         itemsAdapter =
                 new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, results);
 
         lv.setAdapter(itemsAdapter);
 
-
-
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
         // Get the SearchView and set the searchable configuration
         SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
-        SearchView searchView = (SearchView) findViewById(R.id.foodSearch);
+        SearchView searchView = (SearchView) findViewById(R.id.exSearch);
         // Assumes current activity is the searchable activity
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
 
         lv.setOnItemClickListener(new ListView.OnItemClickListener(){
             @Override
-            public void onItemClick(AdapterView<?>adapter,View v, int position, long id){
+            public void onItemClick(AdapterView<?> adapter, View v, int position, long id){
                 String toAdd = (String) adapter.getItemAtPosition(position);
                 MainActivity.todayList.add(toAdd);
                 //takes you back to home page after adding an item
                 String[] spl = toAdd.split("\n");
-                MainActivity.netCalories += Integer.parseInt(MainActivity.Nutrition.get(spl[0]));
-                startActivity(new Intent(Search.this, MainActivity.class));
+                MainActivity.netCalories -= Integer.parseInt(MainActivity.Exercise.get(spl[0]));
+                startActivity(new Intent(SearchEx.this, MainActivity.class));
             }
         });
-
 
         s.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                if(newText.isEmpty())
-                {
+                if (newText.isEmpty()) {
                     results.clear();
-                    itemsAdapter.notifyDataSetChanged();
                 }
                 return false;
             }
@@ -113,16 +109,16 @@ public class Search extends AppCompatActivity {
 
 
 
-
     }
 
     private void doMySearch(String q) {
         results.clear();
-        
 
-        for(String s : MainActivity.Nutrition.keySet()) {
-            if (s.contains(q)) {
-                results.add(s + "\n" + MainActivity.Nutrition.get(s) + " Calories");
+        for(String s : MainActivity.Exercise.keySet()) {
+            String[] splited = s.split(" ");
+
+            if (splited[0].contains(q)) {
+                results.add(s + "\n" + MainActivity.Exercise.get(s) + " Calories");
             }
             else
                 Log.d("sss", s);

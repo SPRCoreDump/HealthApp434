@@ -57,7 +57,9 @@
                 android:layout_marginBottom="8dp"
                 android:ems="10"
                 android:layout_weight="1"
-                android:inputType="number" />
+                android:inputType="number"
+                android:nextFocusRight="@id/height_in"
+                android:nextFocusDown="@id/height_in"/>
 
             <EditText
                 android:id="@+id/height_in"
@@ -86,36 +88,59 @@
             android:layout_marginEnd="32dp"
             android:layout_marginBottom="8dp"
             android:ems="10"
-            android:inputType="number" />
+            android:inputType="numberDecimal" />
 
-        <RadioGroup
-            android:id="@+id/gender_selector"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/genderAgeContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_below="@id/weight"
-            android:paddingStart="32dp"
-            android:checkedButton="@id/male_button"
-            android:layout_height="wrap_content">
+            >
 
-            <RadioButton
-                android:id="@+id/male_button"
-                android:text="Male"
-                android:textColor="@color/colorPrimaryDark"
-                android:fontFamily="@string/title_dashboard"
+            <EditText
+                android:id="@+id/age"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Age"
+                android:inputType="number"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                />
+
+            <RadioGroup
+                android:id="@+id/gender_selector"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_below="@id/weight"
+                android:paddingStart="32dp"
+                android:checkedButton="@id/male_button"
+                android:layout_weight="1"
+                android:layout_height="wrap_content">
 
-            <RadioButton
-                android:id="@+id/female_button"
-                android:text="Female"
-                android:textColor="@color/colorPrimaryDark"
-                android:fontFamily="@string/title_dashboard"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                <RadioButton
+                    android:id="@+id/male_button"
+                    android:text="Male"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:fontFamily="@string/title_dashboard"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
 
-        </RadioGroup>
+                <RadioButton
+                    android:id="@+id/female_button"
+                    android:text="Female"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:fontFamily="@string/title_dashboard"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </RadioGroup>
+        </LinearLayout>
+
         <Button
             android:id="@+id/save_button"
-            android:layout_below="@id/gender_selector"
+            android:layout_below="@id/genderAgeContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"

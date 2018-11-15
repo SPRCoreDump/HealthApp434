@@ -1,5 +1,6 @@
 package edu.umd.jchao.healthapp;
 
+import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -28,12 +29,19 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Settings extends AppCompatActivity {
+public class Settings extends AppCompatActivity{
 
     private TextView Tdee;
     private String[] biometrics;
-    EditText heightFt, heightIn, weight;
+    EditText heightFt, heightIn, weight, ageInput;
     RadioButton male, female;
+
+    //buncha public variables that should be accessed from the outside. There are getters and setters
+    public static int heightCmOrFt = 0,
+            height2 = 0,
+            gender = 0,
+            age = 0;
+    public static double weightLbOrKg = 0;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -62,7 +70,7 @@ public class Settings extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        biometrics = new String[4];
+        biometrics = new String[5];
 
         Tdee = (TextView) findViewById(R.id.TDEE_display);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
@@ -71,6 +79,7 @@ public class Settings extends AppCompatActivity {
         heightFt = findViewById(R.id.height_ft);
         heightIn = findViewById(R.id.height_in);
         weight = findViewById(R.id.weight);
+        ageInput = findViewById(R.id.age);
         male = findViewById(R.id.male_button);
         female = findViewById(R.id.female_button);
 
@@ -78,11 +87,12 @@ public class Settings extends AppCompatActivity {
         save.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if(getInput()) {
-                    Tdee.setText(tdee(Integer.parseInt(biometrics[3]), false)+"\ncalories to maintain current weight");
+                    int theGender = Integer.parseInt(biometrics[3]);
+                    Tdee.setText(tdee(theGender, false)+"\ncalories to maintain current weight");
                     writeCSV(biometrics, "Biometrics.csv");
                 }
                 else{
-                    Tdee.setText("Please enter a valid height, weight, and select a gender");
+                    Tdee.setText("Please enter a valid height, weight, age, and select a gender");
                 }
 
                 InputMethodManager inputManager = (InputMethodManager)
@@ -97,7 +107,7 @@ public class Settings extends AppCompatActivity {
     private int tdee(int gender, boolean metric){
         double height = Double.parseDouble(biometrics[0])*12 + Double.parseDouble(biometrics[1]);
         double weight = Double.parseDouble(biometrics[2]);
-        int age = 20;
+        int age = Integer.parseInt(biometrics[4]);
 
         if(!metric) {
             height = (height*2.54);
@@ -116,22 +126,24 @@ public class Settings extends AppCompatActivity {
         biometrics[0] = heightFt.getText().toString();
         biometrics[1] = heightIn.getText().toString();
         biometrics[2] = weight.getText().toString();
+        biometrics[4] = ageInput.getText().toString();
         if(male.isChecked())
             biometrics[3] = 0+"";
         else
             biometrics[3] = 1+"";
 
-        return Pattern.matches("[0-9]*", heightFt.getText()) &&
+        if(biometrics[0] == null||biometrics[1]==null||biometrics[2]== null||biometrics[4]==null)
+            return false;
+
+        return Pattern.matches("[0-9]+", heightFt.getText()) &&
                 Pattern.matches("[1-9]|1[0-1]", heightIn.getText()) &&
-                Pattern.matches("[0-9]*", weight.getText());
+                Pattern.matches("([0-9]+|.)+", weight.getText()) &&
+                Pattern.matches("[0-9]+", ageInput.getText());
     }
 
-    private boolean writeCSV(String[] biometrics, String fileLoc){
+    private void writeCSV(String[] biometrics, String fileLoc){
         FileWriter fw = null;
         String input = "";
-
-        if(biometrics[0] == null||biometrics[1]==null||biometrics[2]== null||biometrics[3] == null)
-            return false;
 
         try{
             fw = new FileWriter(fileLoc);
@@ -139,11 +151,15 @@ public class Settings extends AppCompatActivity {
                 input += s+",";
             }
             fw.append(input);
+            heightCmOrFt = Integer.parseInt(biometrics[0]);
+            height2 = Integer.parseInt(biometrics[1]);
+            weightLbOrKg = Double.parseDouble(biometrics[2]);
+            gender = Integer.parseInt(biometrics[3]);
+            age = Integer.parseInt(biometrics[4]);
         }
         catch (IOException e){
             e.printStackTrace();
         }
-        return true;
     }
 
 
@@ -176,4 +192,21 @@ public class Settings extends AppCompatActivity {
         return null;
     }
 
+    public static int getHeightCmOrFt(){
+        return heightCmOrFt;
+    }
+    public static int getHeight2(){
+        return height2;
+    }
+
+    public static double getWeightLbOrKg() {
+        return weightLbOrKg;
+    }
+
+    public static int getAge() {
+        return age;
+    }
+    public static int getGender(){
+        return gender;
+    }
 }

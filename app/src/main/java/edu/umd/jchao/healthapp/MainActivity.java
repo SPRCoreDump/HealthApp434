@@ -92,14 +92,14 @@ public class MainActivity extends AppCompatActivity {
         foodBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, Search.class));
+                startActivity(new Intent(MainActivity.this, SearchFood.class));
             }
         });
 
         activityBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, search2.class));
+                startActivity(new Intent(MainActivity.this, SearchEx.class));
             }
         });
 
