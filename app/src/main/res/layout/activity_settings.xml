@@ -148,20 +148,21 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:textColor="@color/colorPrimaryDark"
-            android:text="Save" />
+            android:text="Calculate TDEE" />
 
         <TextView
             android:id="@+id/TDEE_display"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text=""
+            android:layout_below="@id/save_button"
+            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
-            android:layout_below="@id/save_button"
+            android:text=""
             android:textAlignment="center"
-            android:textSize="24dp" />
+            android:textSize="30sp"
+            android:textStyle="bold" />
 
     </RelativeLayout>
 
