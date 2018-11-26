@@ -32,7 +32,9 @@ import java.util.regex.Pattern;
 public class Settings extends AppCompatActivity{
 
     private TextView Tdee;
+    private TextView maxCals;
     private String[] biometrics;
+    private static int cals = 2000;
     EditText heightFt, heightIn, weight, ageInput;
     RadioButton male, female;
 
@@ -88,7 +90,9 @@ public class Settings extends AppCompatActivity{
             public void onClick(View v) {
                 if(getInput()) {
                     int theGender = Integer.parseInt(biometrics[3]);
-                    Tdee.setText(tdee(theGender, false)+"\ncalories to maintain current weight");
+                    cals = tdee(theGender, false);
+                    Tdee.setText(cals + "\ncalories to maintain current weight");
+                    //maxCals.setText(cals);
                     writeCSV(biometrics, "Biometrics.csv");
                 }
                 else{
@@ -198,6 +202,7 @@ public class Settings extends AppCompatActivity{
     public static int getHeight2(){
         return height2;
     }
+    public static int getCals() {return cals;}
 
     public static double getWeightLbOrKg() {
         return weightLbOrKg;

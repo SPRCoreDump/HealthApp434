@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.io.BufferedReader;
@@ -62,14 +63,31 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        int maxProgress;
+        TextView max;
+
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        ProgressBar pb = (ProgressBar) findViewById(R.id.progressBar);
+
         lv = findViewById(R.id.food);
+
+        maxProgress = Settings.getCals();
+        Log.d("Cals", String.valueOf(maxProgress));
+
+        max = (TextView) findViewById(R.id.max);
+        Log.d("Cals", String.valueOf(max.getText()));
+        max.setText(String.valueOf(maxProgress));
+        //Log.d("Cals", "HERE");
 
         TextView tv1 = (TextView)findViewById(R.id.calories);
         tv1.setText("Net Calories: " + netCalories);
 
+        pb.setMin(0);
+        pb.setMax(maxProgress);
+        pb.setProgress(netCalories);
 
 
 

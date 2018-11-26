@@ -102,13 +102,13 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/max"
         android:layout_width="38dp"
         android:layout_height="23dp"
         android:layout_marginTop="148dp"
         android:layout_marginEnd="32dp"
-        android:textColor="@color/colorPrimaryDark"
         android:text="2000"
+        android:textColor="@color/colorPrimaryDark"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
