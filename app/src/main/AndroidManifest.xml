@@ -41,7 +41,7 @@
         <activity
             android:name=".SearchEx"
             android:label="@string/title_activity_search2" />
-        <activity android:name=".Calendar" />
+        <activity android:name=".CalendarBarGraph" />
     </application>
 
 </manifest>

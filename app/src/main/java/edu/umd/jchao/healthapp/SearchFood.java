@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.SearchView;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class SearchFood extends AppCompatActivity {
 
@@ -36,8 +37,8 @@ public class SearchFood extends AppCompatActivity {
                     startActivity(new Intent(SearchFood.this, MainActivity.class));
                     return true;
                 case R.id.navigation_cal:
-                    //mTextMessage.setText("Calendar");
-                    startActivity(new Intent(SearchFood.this, Calendar.class));
+                    //mTextMessage.setText("CalendarBarGraph");
+                    startActivity(new Intent(SearchFood.this, CalendarBarGraph.class));
                     return true;
                 case R.id.navigation_settings:
                     startActivity(new Intent(SearchFood.this, Settings.class));
@@ -52,24 +53,24 @@ public class SearchFood extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
-        mTextMessage = (TextView) findViewById(R.id.message);
+        mTextMessage = findViewById(R.id.message);
         lv = findViewById(R.id.results);
-        s = findViewById(R.id.foodSearch);
 
         itemsAdapter =
-                new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, results);
+                new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, results);
 
         lv.setAdapter(itemsAdapter);
 
 
 
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         // Get the SearchView and set the searchable configuration
         SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
-        SearchView searchView = (SearchView) findViewById(R.id.foodSearch);
+        SearchView searchView = findViewById(R.id.foodSearch);
         // Assumes current activity is the searchable activity
+        assert searchManager != null;
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
 
@@ -80,13 +81,13 @@ public class SearchFood extends AppCompatActivity {
                 MainActivity.todayList.add(toAdd);
                 //takes you back to home page after adding an item
                 String[] spl = toAdd.split("\n");
-                MainActivity.netCalories += Integer.parseInt(MainActivity.Nutrition.get(spl[0]));
+                MainActivity.netCalories += Integer.parseInt(Objects.requireNonNull(MainActivity.Nutrition.get(spl[0])));
                 startActivity(new Intent(SearchFood.this, MainActivity.class));
             }
         });
 
 
-        s.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
             @Override
             public boolean onQueryTextChange(String newText) {

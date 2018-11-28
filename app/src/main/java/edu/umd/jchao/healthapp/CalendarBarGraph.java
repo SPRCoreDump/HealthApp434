@@ -14,8 +14,9 @@ import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
-public class Calendar extends AppCompatActivity {
+public class CalendarBarGraph extends AppCompatActivity {
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -24,13 +25,13 @@ public class Calendar extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    startActivity(new Intent(Calendar.this, MainActivity.class));
+                    startActivity(new Intent(CalendarBarGraph.this, MainActivity.class));
                     return true;
                 case R.id.navigation_cal:
-                    startActivity(new Intent(Calendar.this, Calendar.class));
+                    startActivity(new Intent(CalendarBarGraph.this, CalendarBarGraph.class));
                     return true;
                 case R.id.navigation_settings:
-                    startActivity(new Intent(Calendar.this, Settings.class));
+                    startActivity(new Intent(CalendarBarGraph.this, Settings.class));
                     return true;
             }
             return false;
@@ -60,15 +61,24 @@ public class Calendar extends AppCompatActivity {
     }
 
     public void createBarGraph() {
+        Calendar calendar = Calendar.getInstance();
+
         int cal = MainActivity.netCalories;
+        int day = calendar.get(Calendar.DAY_OF_WEEK);
 
         ArrayList<BarEntry> entries = new ArrayList<>();
+
         for (int i = 0; i < 7; i++) {
-            entries.add(new BarEntry(cal, i));
+            if (day - 1 == i)
+                entries.add(new BarEntry(cal, i));
+            else
+                entries.add(new BarEntry(0, i));
         }
+
         BarDataSet set = new BarDataSet(entries, "Calories");
 
         ArrayList<String> dates = new ArrayList<>();
+
         dates.add("Sun");
         dates.add("Mon");
         dates.add("Tue");
@@ -78,14 +88,23 @@ public class Calendar extends AppCompatActivity {
         dates.add("Sat");
 
         BarData data = new BarData(dates, set);
+
         barChart.setData(data);
         barChart.setDescription("");
+        barChart.setTouchEnabled(false);
 
         YAxis leftAxis = barChart.getAxisLeft();
         YAxis rightAxis = barChart.getAxisRight();
 
-        leftAxis.setAxisMinValue(0);
+        if (cal < 0) {
+            leftAxis.setAxisMinValue(cal);
+            rightAxis.setAxisMinValue(cal);
+        } else {
+            leftAxis.setAxisMinValue(0);
+            rightAxis.setAxisMinValue(0);
+        }
+
         leftAxis.setAxisMaxValue(Settings.getCals());
-        rightAxis.setDrawLabels(false);
+        rightAxis.setAxisMaxValue(Settings.getCals());
     }
 }

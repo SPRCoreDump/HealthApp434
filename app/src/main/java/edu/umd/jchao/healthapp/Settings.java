@@ -1,10 +1,9 @@
 package edu.umd.jchao.healthapp;
 
-import android.app.Application;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
@@ -15,18 +14,14 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import java.io.BufferedReader;
-import java.io.Console;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.regex.Matcher;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 public class Settings extends AppCompatActivity{
@@ -57,7 +52,7 @@ public class Settings extends AppCompatActivity{
                     return true;
                 case R.id.navigation_cal:
                     //mTextMessage.setText("Calednar");
-                    startActivity(new Intent(Settings.this, Calendar.class));
+                    startActivity(new Intent(Settings.this, CalendarBarGraph.class));
                     return true;
                 case R.id.navigation_settings:
                     startActivity(new Intent(Settings.this, Settings.class));
@@ -74,8 +69,8 @@ public class Settings extends AppCompatActivity{
 
         biometrics = new String[5];
 
-        Tdee = (TextView) findViewById(R.id.TDEE_display);
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        Tdee = findViewById(R.id.TDEE_display);
+        BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         heightFt = findViewById(R.id.height_ft);
@@ -87,6 +82,7 @@ public class Settings extends AppCompatActivity{
 
         Button save = findViewById(R.id.save_button);
         save.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("SetTextI18n")
             public void onClick(View v) {
                 if(getInput()) {
                     int theGender = Integer.parseInt(biometrics[3]);
@@ -102,7 +98,8 @@ public class Settings extends AppCompatActivity{
                 InputMethodManager inputManager = (InputMethodManager)
                         getSystemService(Context.INPUT_METHOD_SERVICE);
 
-                inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+                assert inputManager != null;
+                inputManager.hideSoftInputFromWindow(Objects.requireNonNull(getCurrentFocus()).getWindowToken(),
                         InputMethodManager.HIDE_NOT_ALWAYS);
             }
         });
@@ -146,15 +143,15 @@ public class Settings extends AppCompatActivity{
     }
 
     private void writeCSV(String[] biometrics, String fileLoc){
-        FileWriter fw = null;
-        String input = "";
+        FileWriter fw;
+        StringBuilder input = new StringBuilder();
 
         try{
             fw = new FileWriter(fileLoc);
             for(String s : biometrics){
-                input += s+",";
+                input.append(s).append(",");
             }
-            fw.append(input);
+            fw.append(input.toString());
             heightCmOrFt = Integer.parseInt(biometrics[0]);
             height2 = Integer.parseInt(biometrics[1]);
             weightLbOrKg = Double.parseDouble(biometrics[2]);
@@ -175,9 +172,8 @@ public class Settings extends AppCompatActivity{
 
         try {
             br = new BufferedReader(new InputStreamReader(getAssets().open(fileLoc)));
-            while ((line = br.readLine()) != null) {
-                String[] biometrics = line.split(",");
-                return biometrics;
+            if ((line = br.readLine()) != null) {
+                return line.split(",");
             }
 
         } catch (FileNotFoundException e) {

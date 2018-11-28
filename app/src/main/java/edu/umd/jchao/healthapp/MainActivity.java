@@ -1,5 +1,6 @@
 package edu.umd.jchao.healthapp;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -48,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 case R.id.navigation_cal:
                     //mTextMessage.setText(R.string.title_cal);
-                    startActivity(new Intent(MainActivity.this, Calendar.class));
+                    startActivity(new Intent(MainActivity.this, CalendarBarGraph.class));
                     return true;
                 case R.id.navigation_settings:
                     //mTextMessage.setText(R.string.title_settings);
@@ -60,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
     };
 
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -70,19 +72,19 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ProgressBar pb = (ProgressBar) findViewById(R.id.progressBar);
+        ProgressBar pb = findViewById(R.id.progressBar);
 
         lv = findViewById(R.id.food);
 
         maxProgress = Settings.getCals();
         Log.d("Cals", String.valueOf(maxProgress));
 
-        max = (TextView) findViewById(R.id.max);
+        max = findViewById(R.id.max);
         Log.d("Cals", String.valueOf(max.getText()));
         max.setText(String.valueOf(maxProgress));
         //Log.d("Cals", "HERE");
 
-        TextView tv1 = (TextView)findViewById(R.id.calories);
+        TextView tv1 = findViewById(R.id.calories);
         tv1.setText("Net Calories: " + netCalories);
 
         pb.setMin(0);
@@ -92,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         todayAdapter =
-                new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, todayList);
+                new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, todayList);
 
         lv.setAdapter(todayAdapter);
 
@@ -100,12 +102,12 @@ public class MainActivity extends AppCompatActivity {
         Nutrition = new HashMap<>();
         Exercise = new HashMap<>();
 
-        mTextMessage = (TextView) findViewById(R.id.message);
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        mTextMessage = findViewById(R.id.message);
+        BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        Button foodBtn = (Button) findViewById(R.id.NewFood);
-        Button activityBtn = (Button) findViewById(R.id.NewActivity);
+        Button foodBtn = findViewById(R.id.NewFood);
+        Button activityBtn = findViewById(R.id.NewActivity);
 
         foodBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,6 +138,7 @@ public class MainActivity extends AppCompatActivity {
                         String cal = Nutrition.get(key);
                         if(cal == null) {
                             cal = Exercise.get(key);
+                            assert cal != null;
                             netCalories += Integer.parseInt(cal);
                         }
                         else
