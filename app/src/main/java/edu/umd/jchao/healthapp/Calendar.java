@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -62,13 +63,9 @@ public class Calendar extends AppCompatActivity {
         int cal = MainActivity.netCalories;
 
         ArrayList<BarEntry> entries = new ArrayList<>();
-        entries.add(new BarEntry(730, 0));
-        entries.add(new BarEntry(110, 1));
-        entries.add(new BarEntry(1710, 2));
-        entries.add(new BarEntry(cal, 3));
-        entries.add(new BarEntry(960, 4));
-        entries.add(new BarEntry(1930, 5));
-        entries.add(new BarEntry(1790, 6));
+        for (int i = 0; i < 7; i++) {
+            entries.add(new BarEntry(cal, i));
+        }
         BarDataSet set = new BarDataSet(entries, "Calories");
 
         ArrayList<String> dates = new ArrayList<>();
@@ -83,5 +80,12 @@ public class Calendar extends AppCompatActivity {
         BarData data = new BarData(dates, set);
         barChart.setData(data);
         barChart.setDescription("");
+
+        YAxis leftAxis = barChart.getAxisLeft();
+        YAxis rightAxis = barChart.getAxisRight();
+
+        leftAxis.setAxisMinValue(0);
+        leftAxis.setAxisMaxValue(Settings.getCals());
+        rightAxis.setDrawLabels(false);
     }
 }
