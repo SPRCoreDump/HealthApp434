@@ -48,31 +48,40 @@ public class Calendar extends AppCompatActivity {
 
         barChart = findViewById(R.id.bargraph);
 
+        createBarGraph();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        createBarGraph();
+    }
+
+    public void createBarGraph() {
+        int cal = MainActivity.netCalories;
+
         ArrayList<BarEntry> entries = new ArrayList<>();
-        entries.add(new BarEntry(440, 0));
-        entries.add(new BarEntry(880, 1));
-        entries.add(new BarEntry(660, 2));
-        entries.add(new BarEntry(120, 3));
-        entries.add(new BarEntry(190, 4));
-        entries.add(new BarEntry(910, 5));
-        entries.add(new BarEntry(690, 6));
+        entries.add(new BarEntry(730, 0));
+        entries.add(new BarEntry(110, 1));
+        entries.add(new BarEntry(1710, 2));
+        entries.add(new BarEntry(cal, 3));
+        entries.add(new BarEntry(960, 4));
+        entries.add(new BarEntry(1930, 5));
+        entries.add(new BarEntry(1790, 6));
         BarDataSet set = new BarDataSet(entries, "Calories");
 
         ArrayList<String> dates = new ArrayList<>();
-        dates.add("Monday");
-        dates.add("Tuesday");
-        dates.add("Wednesday");
-        dates.add("Thursday");
-        dates.add("Friday");
-        dates.add("Saturday");
-        dates.add("Sunday");
+        dates.add("Sun");
+        dates.add("Mon");
+        dates.add("Tue");
+        dates.add("Wed");
+        dates.add("Thu");
+        dates.add("Fri");
+        dates.add("Sat");
 
         BarData data = new BarData(dates, set);
         barChart.setData(data);
         barChart.setDescription("");
-
-        barChart.setTouchEnabled(true);
-        barChart.setDragEnabled(true);
-        barChart.setScaleEnabled(true);
     }
 }
