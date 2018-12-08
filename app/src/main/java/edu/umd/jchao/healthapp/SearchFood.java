@@ -1,16 +1,20 @@
 package edu.umd.jchao.healthapp;
 
 import android.app.SearchManager;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.SearchView;
@@ -25,6 +29,7 @@ public class SearchFood extends AppCompatActivity {
     private SearchView s;
     private ArrayList<String> results = new ArrayList<>();
     private ArrayAdapter<String> itemsAdapter;
+    int portions;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -77,12 +82,34 @@ public class SearchFood extends AppCompatActivity {
         lv.setOnItemClickListener(new ListView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?>adapter,View v, int position, long id){
-                String toAdd = (String) adapter.getItemAtPosition(position);
-                MainActivity.todayList.add(toAdd);
+
+                final String toAdd = (String) adapter.getItemAtPosition(position);
                 //takes you back to home page after adding an item
                 String[] spl = toAdd.split("\n");
-                MainActivity.netCalories += Integer.parseInt(Objects.requireNonNull(MainActivity.Nutrition.get(spl[0])));
-                startActivity(new Intent(SearchFood.this, MainActivity.class));
+                AlertDialog.Builder builder = new AlertDialog.Builder(SearchFood.this);
+                builder.setMessage("How many servings of this food did you have?");
+                final EditText input = new EditText(SearchFood.this);
+                input.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                input.setInputType(InputType.TYPE_CLASS_NUMBER);
+                builder.setView(input);
+
+
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        portions = Integer.parseInt(input.getText().toString());
+                        MainActivity.todayList.add(portions + " servings of " + toAdd);
+                        //takes you back to home page after adding an item
+                        String[] spl = toAdd.split("\n");
+                        Log.d("toAdd",  spl[0]);
+
+                        MainActivity.netCalories += Integer.parseInt(Objects.requireNonNull(MainActivity.Nutrition.get(spl[0]))) * portions;
+
+                        startActivity(new Intent(SearchFood.this, MainActivity.class));
+
+                    }
+                });
+                builder.show();
+                AlertDialog dialog = builder.create();
             }
         });
 
@@ -123,7 +150,7 @@ public class SearchFood extends AppCompatActivity {
 
         for(String s : MainActivity.Nutrition.keySet()) {
             if (s.contains(q)) {
-                results.add(s + "\n" + MainActivity.Nutrition.get(s) + " Calories");
+                results.add(s + "\n" + MainActivity.Nutrition.get(s) + " Calories per Serving");
             }
             else
                 Log.d("sss", s);
