@@ -128,6 +128,9 @@ public class SearchFood extends AppCompatActivity {
             else
                 Log.d("sss", s);
         }
+
+        if(results.isEmpty())
+            results.add("No results found.");
     }
 
 }
