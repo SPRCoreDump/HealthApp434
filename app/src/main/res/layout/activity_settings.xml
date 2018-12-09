@@ -113,7 +113,6 @@
             <RadioGroup
                 android:id="@+id/gender_selector"
                 android:layout_width="wrap_content"
-                android:layout_below="@id/weight"
                 android:paddingStart="32dp"
                 android:checkedButton="@id/male_button"
                 android:layout_weight="1"
