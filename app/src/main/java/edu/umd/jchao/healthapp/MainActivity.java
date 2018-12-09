@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
 
             String image;   //first test to see if listitem works before differentiating
             if(labels[4].equals("Exercise"))
-                image = "exercise/exercise.png";
+                image = "food.png";
             else
                 image = "exercise.png";
 
