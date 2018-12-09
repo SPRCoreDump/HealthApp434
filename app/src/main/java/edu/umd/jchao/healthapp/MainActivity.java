@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
 
         ProgressBar pb = findViewById(R.id.progressBar);
 
-        lv = findViewById(R.id.food);
+        lv = (ListView)findViewById(R.id.food);
 
         maxProgress = Settings.getCals();
         Log.d("Cals", String.valueOf(maxProgress));
@@ -109,14 +109,13 @@ public class MainActivity extends AppCompatActivity {
 
 
         for(String s : todayList){
-            //String[] words = s.split(" \n");
             String name = s.substring(0, s.indexOf('(')).trim();
             String description = s.substring(s.indexOf('(')+1, s.indexOf(')')).trim();
             int calories = Integer.parseInt(s.substring(s.indexOf("\n"), s.lastIndexOf(' ')).trim());
 
             String image;   //first test to see if listitem works before differentiating
             if(true)//TODO: actually distinguish somewhere betweeen exercise and activity lmao
-                image = "exercise/exercise.png";
+                image = "exercise.png";
             else
                 image = "exercise.png";
             int amount = 1;
@@ -124,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
             customTodayList.add(new ListItem(name, description, amount, calories, image));
         }
 
-        ArrayAdapter<ListItem> adapter = new customTodayListAdapter(this, 0, customTodayList);
+        CustomTodayListAdapter adapter = new CustomTodayListAdapter(this, 0, customTodayList);
         lv.setAdapter(adapter);
 
 
@@ -240,13 +239,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //custom ArrayAdapter
-    class customTodayListAdapter extends ArrayAdapter<ListItem>{
+    class CustomTodayListAdapter extends ArrayAdapter<ListItem>{
 
         private Context context;
         private List<ListItem> rentalProperties;
 
         //constructor, call on creation
-        public customTodayListAdapter(Context context, int resource, ArrayList<ListItem> objects) {
+        public CustomTodayListAdapter(Context context, int resource, ArrayList<ListItem> objects) {
             super(context, resource, objects);
 
             this.context = context;
