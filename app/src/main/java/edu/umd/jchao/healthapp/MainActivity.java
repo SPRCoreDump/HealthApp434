@@ -109,17 +109,17 @@ public class MainActivity extends AppCompatActivity {
 
 
         for(String s : todayList){
-            //String[] words = s.split(" \n");
-            String name = s.substring(0, s.indexOf('(')).trim();
-            String description = s.substring(s.indexOf('(')+1, s.indexOf(')')).trim();
-            int calories = Integer.parseInt(s.substring(s.indexOf("\n"), s.lastIndexOf(' ')).trim());
+            String labels[] = s.split(",");
+            String description = labels[1];
+            String name = labels[0];
+            int calories = Integer.parseInt(labels[3]);
+            int amount = Integer.parseInt(labels[2]);
 
             String image;   //first test to see if listitem works before differentiating
-            if(true)//TODO: actually distinguish somewhere betweeen exercise and activity lmao
+            if(labels[4].equals("Exercise"))
                 image = "exercise/exercise.png";
             else
                 image = "exercise.png";
-            int amount = 1;
 
             customTodayList.add(new ListItem(name, description, amount, calories, image));
         }
@@ -166,25 +166,29 @@ public class MainActivity extends AppCompatActivity {
                 builder.setMessage("Would you like to delete this?");
                 builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        String rmv = (String) adapter.getItemAtPosition(position);
-                        todayList.remove(rmv);
-                        String[] k = rmv.split("\n");
-                        String key = k[0];
-                        String cal = Nutrition.get(key);
+                        Log.d("remove", "here");
+                        ListItem rmv = customTodayList.get(position);
+                        Log.d("remove", rmv.getName());
+
+                        customTodayList.remove(position);
+                        todayList.remove(position);
+
+                        String cal = Nutrition.get(rmv.getName());
                         if(cal == null) {
-                            cal = Exercise.get(key);
+                            cal = Exercise.get(rmv.getName());
+                            Log.d("remove", cal);
                             assert cal != null;
-                            netCalories += Integer.parseInt(cal);
+                            netCalories += rmv.getCalories();
                         }
                         else
-                            netCalories -= Integer.parseInt(cal);
+                            netCalories -= rmv.getCalories();
 
                         TextView tv1 = findViewById(R.id.calories);
                         tv1.setText("Net Calories: " + netCalories);
 
+                        finish();
+                        startActivity(getIntent());
 
-
-                        todayAdapter.notifyDataSetChanged();
                     }
                 });
                 builder.setNegativeButton("No", new DialogInterface.OnClickListener() {

@@ -97,12 +97,15 @@ public class SearchFood extends AppCompatActivity {
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         portions = Integer.parseInt(input.getText().toString());
-                        MainActivity.todayList.add(portions + " servings of " + toAdd);
-                        //takes you back to home page after adding an item
                         String[] spl = toAdd.split("\n");
                         Log.d("toAdd",  spl[0]);
+                        int totalCals = Integer.parseInt(Objects.requireNonNull(MainActivity.Nutrition.get(spl[0]))) * portions;
 
-                        MainActivity.netCalories += Integer.parseInt(Objects.requireNonNull(MainActivity.Nutrition.get(spl[0]))) * portions;
+                        // format (name, description, amount, calories, image)
+                        MainActivity.todayList.add(spl[0] + ", ," + portions + "," + totalCals + "," + "Food");
+                        //takes you back to home page after adding an item
+
+                        MainActivity.netCalories += totalCals;
 
                         startActivity(new Intent(SearchFood.this, MainActivity.class));
 
