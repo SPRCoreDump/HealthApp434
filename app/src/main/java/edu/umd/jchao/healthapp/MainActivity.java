@@ -1,6 +1,7 @@
 package edu.umd.jchao.healthapp;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,14 +10,18 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.content.Context;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -25,6 +30,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
     static ArrayList<String> todayList = new ArrayList<>(); //list of exercises and foods eaten today
     private ArrayAdapter<String> todayAdapter;
     private ListView lv;
+    private ArrayList<ListItem> customTodayList = new ArrayList<>();
+    private Context context;
     public static int netCalories = 0; //what will be displayed on top of main page
 
 
@@ -91,12 +99,39 @@ public class MainActivity extends AppCompatActivity {
         pb.setMax(maxProgress);
         pb.setProgress(netCalories);
 
+        todayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, todayList);
 
 
-        todayAdapter =
-                new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, todayList);
 
-        lv.setAdapter(todayAdapter);
+
+
+
+
+
+        for(String s : todayList){
+            //String[] words = s.split(" \n");
+            String name = s.substring(0, s.indexOf('(')).trim();
+            String description = s.substring(s.indexOf('(')+1, s.indexOf(')')).trim();
+            int calories = Integer.parseInt(s.substring(s.indexOf("\n"), s.lastIndexOf(' ')).trim());
+
+            String image;   //first test to see if listitem works before differentiating
+            if(true)//TODO: actually distinguish somewhere betweeen exercise and activity lmao
+                image = "exercise/exercise.png";
+            else
+                image = "exercise.png";
+            int amount = 1;
+
+            customTodayList.add(new ListItem(name, description, amount, calories, image));
+        }
+
+        ArrayAdapter<ListItem> adapter = new customTodayListAdapter(this, 0, customTodayList);
+        lv.setAdapter(adapter);
+
+
+
+
+
+
 
 
         Nutrition = new HashMap<>();
@@ -204,5 +239,90 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //custom ArrayAdapter
+    class customTodayListAdapter extends ArrayAdapter<ListItem>{
+
+        private Context context;
+        private List<ListItem> rentalProperties;
+
+        //constructor, call on creation
+        public customTodayListAdapter(Context context, int resource, ArrayList<ListItem> objects) {
+            super(context, resource, objects);
+
+            this.context = context;
+            this.rentalProperties = objects;
+        }
+
+        //called when rendering the list
+        public View getView(int position, View convertView, ViewGroup parent) {
+
+            //get the item we are displaying
+            final ListItem item = rentalProperties.get(position);
+            final TextView tv1 = findViewById(R.id.calories);
+
+            final float[] hackerLoophole = new float[2];
+            hackerLoophole[0] = item.getCalories();
+            hackerLoophole[1] = item.getAmount();
+
+            //get the inflater and inflate the XML layout for each item
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+            View view = inflater.inflate(R.layout.list_item_layout, null);
+
+            TextView name = view.findViewById(R.id.name);
+            TextView description = view.findViewById(R.id.description);
+            final TextView amount = view.findViewById(R.id.amount);
+            final TextView calories = view.findViewById(R.id.calories);
+            ImageView image = view.findViewById(R.id.image);
+            Button minus = view.findViewById(R.id.minus);
+            Button plus = view.findViewById(R.id.plus);
+
+            //set name field
+            name.setText(item.getName());
+
+            //display trimmed excerpt for description
+            int descriptionLength = item.getDescription().length();
+            if(descriptionLength >= 100){
+                String descriptionTrim = item.getDescription().substring(0, 100) + "...";
+                description.setText(descriptionTrim);
+            }else{
+                description.setText(item.getDescription());
+            }
+
+            //set calories and amount (either reps or portions)
+            calories.setText(hackerLoophole[0]+" Calories");
+            amount.setText(String.valueOf(hackerLoophole[1]));
+
+            //get the image associated with this item
+            int imageID = context.getResources().getIdentifier(item.getImage(), "drawable", context.getPackageName());
+            image.setImageResource(imageID);
+
+            plus.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    hackerLoophole[1] ++;   //amount
+                    hackerLoophole[0] = item.getCalories()*hackerLoophole[1];      //calories
+                    calories.setText(hackerLoophole[0]+" Calories");
+                    amount.setText(hackerLoophole[1]+"");
+                    netCalories += item.getCalories();
+                    tv1.setText("Net Calories: " + netCalories);
+                }
+            });
+
+            minus.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    if(hackerLoophole[1] > 1){
+                        hackerLoophole[1] --;   //amount
+                        hackerLoophole[0] = item.getCalories()*hackerLoophole[1];     //calories
+                        calories.setText(hackerLoophole[0]+" Calories");
+                        amount.setText(hackerLoophole[1]+"");
+                        netCalories -= item.getCalories();
+                        tv1.setText("Net Calories: " + netCalories);
+                    }
+                }
+            });
+
+            return view;
+        }
+
+    }
 
 }
