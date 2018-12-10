@@ -4,8 +4,10 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -69,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
     };
 
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -275,7 +278,7 @@ public class MainActivity extends AppCompatActivity {
             TextView name = view.findViewById(R.id.name);
             TextView description = view.findViewById(R.id.description);
             final TextView amount = view.findViewById(R.id.amount);
-            final TextView calories = view.findViewById(R.id.calories);
+            final TextView calories = (TextView) view.findViewById(R.id.calories);
             ImageView image = view.findViewById(R.id.image);
             Button minus = view.findViewById(R.id.minus);
             Button plus = view.findViewById(R.id.plus);
@@ -302,24 +305,42 @@ public class MainActivity extends AppCompatActivity {
 
             plus.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    hackerLoophole[1] ++;   //amount
-                    hackerLoophole[0] = item.getCalories()*hackerLoophole[1];      //calories
-                    calories.setText(hackerLoophole[0]+" Calories");
-                    amount.setText(hackerLoophole[1]+"");
-                    netCalories += item.getCalories();
+                    float amt = item.getAmount();
+                    int perItem = (int) (item.getCalories() / amt);
+                    amt++;
+
+
+                    calories.setText((perItem * amt) + " Calories");
+
+                    amount.setText(amt+"");
+
+                    netCalories += perItem;
                     tv1.setText("Net Calories: " + netCalories);
+
+                    item.setCalories((int)(perItem * amt));
+                    item.setAmount(amt);
+
+                    ProgressBar pb = findViewById(R.id.progressBar);
+                    pb.setProgress(netCalories);
                 }
             });
 
             minus.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    if(hackerLoophole[1] > 1){
-                        hackerLoophole[1] --;   //amount
-                        hackerLoophole[0] = item.getCalories()*hackerLoophole[1];     //calories
-                        calories.setText(hackerLoophole[0]+" Calories");
-                        amount.setText(hackerLoophole[1]+"");
-                        netCalories -= item.getCalories();
+                    if(item.getAmount() > 1){
+                        float amt = item.getAmount();
+                        int perItem = (int) (item.getCalories() / amt);
+                        amt--;
+
+                        calories.setText((perItem * amt) + " Calories");
+                        amount.setText(amt+"");
+                        item.setCalories((int) (perItem * amt));
+                        item.setAmount(amt);
+                        netCalories -= perItem;
                         tv1.setText("Net Calories: " + netCalories);
+                        ProgressBar pb = findViewById(R.id.progressBar);
+                        pb.setProgress(netCalories);
+
                     }
                 }
             });
