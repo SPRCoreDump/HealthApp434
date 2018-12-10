@@ -104,9 +104,10 @@ public class SearchEx extends AppCompatActivity {
                         mins = Integer.parseInt(input.getText().toString());
                         //takes you back to home page after adding an item
                         String[] spl = toAdd.split("\n");
-                        int totalCals = (Integer.parseInt(Objects.requireNonNull(MainActivity.Exercise.get(spl[0]))) / 15) * mins;
+                        int totalCals = Integer.parseInt(Objects.requireNonNull(MainActivity.Exercise.get(spl[0]))) / 15 * mins;
 
-                        MainActivity.todayList.add(spl[0] + ", ," + mins + "," + totalCals + "," + "Exercise");
+
+                        MainActivity.todayList.add(spl[0] + ", ," + mins + "," + -totalCals + "," + "Exercise");
 
 
                         MainActivity.netCalories -= totalCals;

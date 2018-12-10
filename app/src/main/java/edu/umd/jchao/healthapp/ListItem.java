@@ -58,4 +58,5 @@ public class ListItem {
     public float getAmount(){return amount;}
 
     public void setAmount(float amount){this.amount = amount;}
+    public void setCalories(int calories){this.calories = calories;}
 }
