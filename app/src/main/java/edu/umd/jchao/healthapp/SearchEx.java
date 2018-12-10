@@ -44,7 +44,7 @@ public class SearchEx extends AppCompatActivity {
                     return true;
                 case R.id.navigation_cal:
                     //mTextMessage.setText("CalendarBarGraph");
-                    startActivity(new Intent(SearchEx.this, CalendarBarGraph.class));
+                    startActivity(new Intent(SearchEx.this, CalendarActivity.class));
                     return true;
                 case R.id.navigation_settings:
                     startActivity(new Intent(SearchEx.this, Settings.class));
@@ -79,9 +79,9 @@ public class SearchEx extends AppCompatActivity {
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
 
-        lv.setOnItemClickListener(new ListView.OnItemClickListener(){
+        lv.setOnItemClickListener(new ListView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapter, View v, int position, long id){
+            public void onItemClick(AdapterView<?> adapter, View v, int position, long id) {
                 String temp = (String) adapter.getItemAtPosition(position);
                 final String toAdd = temp.split("\n")[0];
 
@@ -101,7 +101,7 @@ public class SearchEx extends AppCompatActivity {
 
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        mins = Integer.parseInt(input.getText().toString());
+                        mins = !input.getText().toString().equals("") ? Integer.parseInt(input.getText().toString()) : 1;
                         //takes you back to home page after adding an item
                         String[] spl = toAdd.split("\n");
                         int totalCals = Integer.parseInt(Objects.requireNonNull(MainActivity.Exercise.get(spl[0]))) / 15 * mins;
@@ -145,24 +145,22 @@ public class SearchEx extends AppCompatActivity {
         });
 
 
-
     }
 
     private void doMySearch(String q) {
         results.clear();
 
-        for(String s : MainActivity.Exercise.keySet()) {
+        for (String s : MainActivity.Exercise.keySet()) {
             String[] splited = s.split(" ");
 
             if (splited[0].contains(q)) {
                 int perMin = Integer.parseInt(MainActivity.Exercise.get(s)) / 15;
                 results.add(s + "\n" + perMin + " Calories per minute");
-            }
-            else
+            } else
                 Log.d("sss", s);
         }
 
-        if(results.isEmpty())
+        if (results.isEmpty())
             results.add("No results found.");
     }
 

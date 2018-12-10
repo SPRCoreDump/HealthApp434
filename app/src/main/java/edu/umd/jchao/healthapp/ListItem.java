@@ -19,7 +19,7 @@ public class ListItem {
     private int amount;
 
     //constructor
-    public ListItem(int streetNumber, String streetName, String suburb, String state, String description, Double price, String image, int bedrooms, int bathrooms, int carspots){
+    public ListItem(int streetNumber, String streetName, String suburb, String state, String description, Double price, String image, int bedrooms, int bathrooms, int carspots) {
 
         this.streetNumber = streetNumber;
         this.streetName = streetName;
@@ -33,7 +33,7 @@ public class ListItem {
         this.carspots = carspots;
     }
 
-    public ListItem(String name, String description, int amount, int calories, String image){
+    public ListItem(String name, String description, int amount, int calories, String image) {
         this.name = name;
         this.description = description;
         this.calories = calories;
@@ -42,21 +42,63 @@ public class ListItem {
     }
 
     //getters
-    public int getStreetNumber() { return streetNumber; }
-    public String getStreetName() {return streetName; }
-    public String getSuburb() {return suburb; }
-    public String getState() {return state; }
-    public String getDescription() {return description; }
-    public Double getPrice() {return price; }
-    public String getImage() { return image; }
-    public int getBedrooms(){ return bedrooms; }
-    public int getBathrooms(){ return bathrooms; }
-    public int getCarspots(){ return carspots; }
+    public int getStreetNumber() {
+        return streetNumber;
+    }
 
-    public String getName(){return name;}
-    public int getCalories(){return calories; }
-    public int getAmount(){return amount;}
+    public String getStreetName() {
+        return streetName;
+    }
 
-    public void setAmount(int amount){this.amount = amount;}
-    public void setCalories(int calories){this.calories = calories;}
+    public String getSuburb() {
+        return suburb;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public int getBedrooms() {
+        return bedrooms;
+    }
+
+    public int getBathrooms() {
+        return bathrooms;
+    }
+
+    public int getCarspots() {
+        return carspots;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getCalories() {
+        return calories;
+    }
+
+    public int getAmount() {
+        return amount;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
+
+    public void setCalories(int calories) {
+        this.calories = calories;
+    }
 }

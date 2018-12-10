@@ -43,7 +43,7 @@ public class SearchFood extends AppCompatActivity {
                     return true;
                 case R.id.navigation_cal:
                     //mTextMessage.setText("CalendarBarGraph");
-                    startActivity(new Intent(SearchFood.this, CalendarBarGraph.class));
+                    startActivity(new Intent(SearchFood.this, CalendarActivity.class));
                     return true;
                 case R.id.navigation_settings:
                     startActivity(new Intent(SearchFood.this, Settings.class));
@@ -67,7 +67,6 @@ public class SearchFood extends AppCompatActivity {
         lv.setAdapter(itemsAdapter);
 
 
-
         BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
@@ -79,9 +78,9 @@ public class SearchFood extends AppCompatActivity {
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
 
-        lv.setOnItemClickListener(new ListView.OnItemClickListener(){
+        lv.setOnItemClickListener(new ListView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?>adapter,View v, int position, long id){
+            public void onItemClick(AdapterView<?> adapter, View v, int position, long id) {
 
                 final String toAdd = (String) adapter.getItemAtPosition(position);
                 //takes you back to home page after adding an item
@@ -96,9 +95,9 @@ public class SearchFood extends AppCompatActivity {
 
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        portions = Integer.parseInt(input.getText().toString());
+                        portions = !input.getText().toString().equals("") ? Integer.parseInt(input.getText().toString()) : 1;
                         String[] spl = toAdd.split("\n");
-                        Log.d("toAdd",  spl[0]);
+                        Log.d("toAdd", spl[0]);
                         int totalCals = Integer.parseInt(Objects.requireNonNull(MainActivity.Nutrition.get(spl[0]))) * portions;
 
                         // format (name, description, amount, calories, image)
@@ -121,8 +120,7 @@ public class SearchFood extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                if(newText.isEmpty())
-                {
+                if (newText.isEmpty()) {
                     results.clear();
                     itemsAdapter.notifyDataSetChanged();
                 }
@@ -143,23 +141,20 @@ public class SearchFood extends AppCompatActivity {
         });
 
 
-
-
     }
 
     private void doMySearch(String q) {
         results.clear();
 
 
-        for(String s : MainActivity.Nutrition.keySet()) {
+        for (String s : MainActivity.Nutrition.keySet()) {
             if (s.contains(q)) {
                 results.add(s + "\n" + MainActivity.Nutrition.get(s) + " Calories per Serving");
-            }
-            else
+            } else
                 Log.d("sss", s);
         }
 
-        if(results.isEmpty())
+        if (results.isEmpty())
             results.add("No results found.");
     }
 

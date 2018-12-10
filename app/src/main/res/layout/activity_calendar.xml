@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CalendarBarGraph">
+    android:orientation="vertical"
+    tools:context=".CalendarActivity">
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"
@@ -16,13 +17,9 @@
         app:layout_constraintRight_toRightOf="parent"
         app:menu="@menu/navigation" />
 
-    <com.github.mikephil.charting.charts.BarChart
+    <CalendarView
+        android:id="@+id/calendarView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="64dp"
-        android:animateLayoutChanges="true"
-        android:id="@+id/bargraph" />
+        android:layout_height="wrap_content" />
+
 </android.support.constraint.ConstraintLayout>

@@ -24,7 +24,7 @@ import java.io.InputStreamReader;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
-public class Settings extends AppCompatActivity{
+public class Settings extends AppCompatActivity {
 
     private TextView Tdee;
     private TextView maxCals;
@@ -52,7 +52,7 @@ public class Settings extends AppCompatActivity{
                     return true;
                 case R.id.navigation_cal:
                     //mTextMessage.setText("Calednar");
-                    startActivity(new Intent(Settings.this, CalendarBarGraph.class));
+                    startActivity(new Intent(Settings.this, CalendarActivity.class));
                     return true;
                 case R.id.navigation_settings:
                     startActivity(new Intent(Settings.this, Settings.class));
@@ -88,24 +88,22 @@ public class Settings extends AppCompatActivity{
         save.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("SetTextI18n")
             public void onClick(View v) {
-                if(getInput()) {
+                if (getInput()) {
                     int theGender = Integer.parseInt(biometrics[3]);
                     String lineChange = "maintain current";
                     cals = tdee(theGender, false);
 
-                    if(lose.isChecked()){
+                    if (lose.isChecked()) {
                         cals *= 0.88;
                         lineChange = "lose";
-                    }
-                    else if(gain.isChecked()){
+                    } else if (gain.isChecked()) {
                         cals *= 1.1;
                         lineChange = "gain";
                     }
-                    Tdee.setText("Consume "+ cals + "\ncalories to "+ lineChange +" weight");
+                    Tdee.setText("Consume " + cals + "\ncalories to " + lineChange + " weight");
 
                     writeCSV(biometrics, "Biometrics.csv");
-                }
-                else{
+                } else {
                     Tdee.setText("Please enter a valid height, weight, age, and select a gender");
                 }
 
@@ -119,36 +117,36 @@ public class Settings extends AppCompatActivity{
         });
     }
 
-    private int tdee(int gender, boolean metric){
-        double height = Double.parseDouble(biometrics[0])*12 + Double.parseDouble(biometrics[1]);
+    private int tdee(int gender, boolean metric) {
+        double height = Double.parseDouble(biometrics[0]) * 12 + Double.parseDouble(biometrics[1]);
         double weight = Double.parseDouble(biometrics[2]);
         int age = Integer.parseInt(biometrics[4]);
         double ret;
 
-        if(!metric) {
-            height = (height*2.54);
-            weight = (weight*0.4536);
+        if (!metric) {
+            height = (height * 2.54);
+            weight = (weight * 0.4536);
         }
 
-        if(gender == 0) //male
-            ret = (66+(13.7*weight)+(5*height)-(6.8*age));
+        if (gender == 0) //male
+            ret = (66 + (13.7 * weight) + (5 * height) - (6.8 * age));
         else //female
-            ret = (655+(9.6*weight)+(1.8*height)-4.7*age);
+            ret = (655 + (9.6 * weight) + (1.8 * height) - 4.7 * age);
 
-        return (int)ret;
+        return (int) ret;
     }
 
-    private boolean getInput(){
+    private boolean getInput() {
         biometrics[0] = heightFt.getText().toString();
         biometrics[1] = heightIn.getText().toString();
         biometrics[2] = weight.getText().toString();
         biometrics[4] = ageInput.getText().toString();
-        if(male.isChecked())
-            biometrics[3] = 0+"";
+        if (male.isChecked())
+            biometrics[3] = 0 + "";
         else
-            biometrics[3] = 1+"";
+            biometrics[3] = 1 + "";
 
-        if(biometrics[0] == null||biometrics[1]==null||biometrics[2]== null||biometrics[4]==null)
+        if (biometrics[0] == null || biometrics[1] == null || biometrics[2] == null || biometrics[4] == null)
             return false;
 
         return Pattern.matches("[0-9]+", heightFt.getText()) &&
@@ -157,13 +155,13 @@ public class Settings extends AppCompatActivity{
                 Pattern.matches("[0-9]+", ageInput.getText());
     }
 
-    private void writeCSV(String[] biometrics, String fileLoc){
+    private void writeCSV(String[] biometrics, String fileLoc) {
         FileWriter fw;
         StringBuilder input = new StringBuilder();
 
-        try{
+        try {
             fw = new FileWriter(fileLoc);
-            for(String s : biometrics){
+            for (String s : biometrics) {
                 input.append(s).append(",");
             }
             fw.append(input.toString());
@@ -172,8 +170,7 @@ public class Settings extends AppCompatActivity{
             weightLbOrKg = Double.parseDouble(biometrics[2]);
             gender = Integer.parseInt(biometrics[3]);
             age = Integer.parseInt(biometrics[4]);
-        }
-        catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -207,13 +204,17 @@ public class Settings extends AppCompatActivity{
         return null;
     }
 
-    public static int getHeightCmOrFt(){
+    public static int getHeightCmOrFt() {
         return heightCmOrFt;
     }
-    public static int getHeight2(){
+
+    public static int getHeight2() {
         return height2;
     }
-    public static int getCals() {return cals;}
+
+    public static int getCals() {
+        return cals;
+    }
 
     public static double getWeightLbOrKg() {
         return weightLbOrKg;
@@ -222,7 +223,8 @@ public class Settings extends AppCompatActivity{
     public static int getAge() {
         return age;
     }
-    public static int getGender(){
+
+    public static int getGender() {
         return gender;
     }
 }

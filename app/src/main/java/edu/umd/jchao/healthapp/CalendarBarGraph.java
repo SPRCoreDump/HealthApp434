@@ -6,12 +6,17 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -28,7 +33,7 @@ public class CalendarBarGraph extends AppCompatActivity {
                     startActivity(new Intent(CalendarBarGraph.this, MainActivity.class));
                     return true;
                 case R.id.navigation_cal:
-                    startActivity(new Intent(CalendarBarGraph.this, CalendarBarGraph.class));
+                    startActivity(new Intent(CalendarBarGraph.this, CalendarActivity.class));
                     return true;
                 case R.id.navigation_settings:
                     startActivity(new Intent(CalendarBarGraph.this, Settings.class));
@@ -43,7 +48,7 @@ public class CalendarBarGraph extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_calendar);
+        setContentView(R.layout.activity_calendar_bar_graph);
 
         BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -91,20 +96,84 @@ public class CalendarBarGraph extends AppCompatActivity {
 
         barChart.setData(data);
         barChart.setDescription("");
-        barChart.setTouchEnabled(false);
 
         YAxis leftAxis = barChart.getAxisLeft();
         YAxis rightAxis = barChart.getAxisRight();
 
+        float buffer = 50 > (cal * .05f) ? 50 : (cal * .05f);
+
         if (cal < 0) {
-            leftAxis.setAxisMinValue(cal);
-            rightAxis.setAxisMinValue(cal);
+            leftAxis.setAxisMinValue(cal - buffer);
+            rightAxis.setAxisMinValue(cal - buffer);
         } else {
             leftAxis.setAxisMinValue(0);
             rightAxis.setAxisMinValue(0);
         }
 
-        leftAxis.setAxisMaxValue(Settings.getCals());
-        rightAxis.setAxisMaxValue(Settings.getCals());
+        if (cal > Settings.getCals()) {
+            leftAxis.setAxisMaxValue(cal + buffer);
+            rightAxis.setAxisMaxValue(cal + buffer);
+        } else {
+            leftAxis.setAxisMaxValue(Settings.getCals() + (Settings.getCals() * .05f));
+            rightAxis.setAxisMaxValue(Settings.getCals() + (Settings.getCals() * .05f));
+        }
+
+        LimitLine ll = new LimitLine(Settings.getCals(), "Goal: " + Integer.toString(Settings.getCals()));
+        ll.setLineWidth(2f);
+        ll.setTextSize(12f);
+
+        leftAxis.addLimitLine(ll);
+
+        barChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+            @Override
+            public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {
+                Calendar calendar = Calendar.getInstance();
+                int date = calendar.get(Calendar.DAY_OF_WEEK);
+                boolean switchActivity = false;
+
+                int pos1 = e.toString().indexOf("xIndex: ");
+                int pos2 = e.toString().indexOf("(sum): ");
+                String day = e.toString().substring(pos1 + 8, pos1 + 9);
+                String cal = e.toString().substring(pos2 + 7);
+
+                if (Integer.toString(date - 1).equals(day))
+                    switchActivity = true;
+
+                switch (day) {
+                    case "0":
+                        day = "Sunday";
+                        break;
+                    case "1":
+                        day = "Monday";
+                        break;
+                    case "2":
+                        day = "Tuesday";
+                        break;
+                    case "3":
+                        day = "Wednesday";
+                        break;
+                    case "4":
+                        day = "Thursday";
+                        break;
+                    case "5":
+                        day = "Friday";
+                        break;
+                    case "6":
+                        day = "Saturday";
+                        break;
+                }
+
+                Toast toast = Toast.makeText(getApplicationContext(), day + "\n" + "Net Calories: " + cal, Toast.LENGTH_SHORT);
+                toast.show();
+
+                if (switchActivity)
+                    startActivity(new Intent(CalendarBarGraph.this, MainActivity.class));
+            }
+
+            @Override
+            public void onNothingSelected() {
+
+            }
+        });
     }
 }

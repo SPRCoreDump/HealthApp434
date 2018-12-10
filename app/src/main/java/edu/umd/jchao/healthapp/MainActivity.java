@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 case R.id.navigation_cal:
                     //mTextMessage.setText(R.string.title_cal);
-                    startActivity(new Intent(MainActivity.this, CalendarBarGraph.class));
+                    startActivity(new Intent(MainActivity.this, CalendarActivity.class));
                     return true;
                 case R.id.navigation_settings:
                     //mTextMessage.setText(R.string.title_settings);
@@ -105,13 +105,10 @@ public class MainActivity extends AppCompatActivity {
         todayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, todayList);
 
 
-
-
         //System.err.println("TESTING HAAHAHAHAHAHHAHAHAHA");
 
 
-
-        for(String s : todayList){
+        for (String s : todayList) {
             String labels[] = s.split(",");
             String description = labels[1];
             String name = labels[0];
@@ -119,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
             int amount = Integer.parseInt(labels[2]);
 
             String image;   //first test to see if listitem works before differentiating
-            if(labels[4].equals("Exercise"))
+            if (labels[4].equals("Exercise"))
                 image = "food.png";
             else
                 image = "exercise.png";
@@ -130,12 +127,6 @@ public class MainActivity extends AppCompatActivity {
 
         ArrayAdapter<ListItem> adapter = new customTodayListAdapter(this, 0, customTodayList);
         lv.setAdapter(adapter);
-
-
-
-
-
-
 
 
         Nutrition = new HashMap<>();
@@ -178,13 +169,12 @@ public class MainActivity extends AppCompatActivity {
                         todayList.remove(position);
 
                         String cal = Nutrition.get(rmv.getName());
-                        if(cal == null) {
+                        if (cal == null) {
                             cal = Exercise.get(rmv.getName());
                             Log.d("remove", cal);
                             assert cal != null;
                             netCalories += rmv.getCalories();
-                        }
-                        else
+                        } else
                             netCalories -= rmv.getCalories();
 
                         TextView tv1 = findViewById(R.id.calories);
@@ -209,7 +199,6 @@ public class MainActivity extends AppCompatActivity {
 
         openCSV("Nutrition.csv", Nutrition, 0, 2);
         openCSV("Exercise.csv", Exercise, 0, 1);
-
 
 
     }
@@ -248,7 +237,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //custom ArrayAdapter
-    class customTodayListAdapter extends ArrayAdapter<ListItem>{
+    class customTodayListAdapter extends ArrayAdapter<ListItem> {
 
         private Context context;
         private List<ListItem> rentalProperties;
@@ -289,15 +278,15 @@ public class MainActivity extends AppCompatActivity {
 
             //display trimmed excerpt for description
             int descriptionLength = item.getDescription().length();
-            if(descriptionLength >= 100){
+            if (descriptionLength >= 100) {
                 String descriptionTrim = item.getDescription().substring(0, 100) + "...";
                 description.setText(descriptionTrim);
-            }else{
+            } else {
                 description.setText(item.getDescription());
             }
 
             //set calories and amount (either reps or portions)
-            calories.setText(hackerLoophole[0]+" Calories");
+            calories.setText(hackerLoophole[0] + " Calories");
             amount.setText(String.valueOf(hackerLoophole[1]));
 
             //get the image associated with this item
@@ -313,12 +302,12 @@ public class MainActivity extends AppCompatActivity {
 
                     calories.setText((perItem * amt) + " Calories");
 
-                    amount.setText(amt+"");
+                    amount.setText(amt + "");
 
                     netCalories += perItem;
                     tv1.setText("Net Calories: " + netCalories);
 
-                    item.setCalories((int)(perItem * amt));
+                    item.setCalories((int) (perItem * amt));
                     item.setAmount(amt);
 
                     ProgressBar pb = findViewById(R.id.progressBar);
@@ -328,13 +317,13 @@ public class MainActivity extends AppCompatActivity {
 
             minus.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    if(item.getAmount() > 1){
+                    if (item.getAmount() > 1) {
                         int amt = item.getAmount();
                         int perItem = (int) (item.getCalories() / amt);
                         amt--;
 
                         calories.setText((perItem * amt) + " Calories");
-                        amount.setText(amt+"");
+                        amount.setText(amt + "");
                         item.setCalories((int) (perItem * amt));
                         item.setAmount(amt);
                         netCalories -= perItem;
