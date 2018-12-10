@@ -306,7 +306,7 @@ public class MainActivity extends AppCompatActivity {
 
             plus.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    float amt = item.getAmount();
+                    int amt = item.getAmount();
                     int perItem = (int) (item.getCalories() / amt);
                     amt++;
 
@@ -329,7 +329,7 @@ public class MainActivity extends AppCompatActivity {
             minus.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     if(item.getAmount() > 1){
-                        float amt = item.getAmount();
+                        int amt = item.getAmount();
                         int perItem = (int) (item.getCalories() / amt);
                         amt--;
 

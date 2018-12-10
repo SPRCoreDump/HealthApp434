@@ -16,7 +16,7 @@ public class ListItem {
     private int bathrooms;
     private int carspots;
     private int calories;
-    private float amount;
+    private int amount;
 
     //constructor
     public ListItem(int streetNumber, String streetName, String suburb, String state, String description, Double price, String image, int bedrooms, int bathrooms, int carspots){
@@ -33,7 +33,7 @@ public class ListItem {
         this.carspots = carspots;
     }
 
-    public ListItem(String name, String description, float amount, int calories, String image){
+    public ListItem(String name, String description, int amount, int calories, String image){
         this.name = name;
         this.description = description;
         this.calories = calories;
@@ -55,8 +55,8 @@ public class ListItem {
 
     public String getName(){return name;}
     public int getCalories(){return calories; }
-    public float getAmount(){return amount;}
+    public int getAmount(){return amount;}
 
-    public void setAmount(float amount){this.amount = amount;}
+    public void setAmount(int amount){this.amount = amount;}
     public void setCalories(int calories){this.calories = calories;}
 }
