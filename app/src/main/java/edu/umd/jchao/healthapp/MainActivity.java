@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
+        //System.err.println("TESTING HAAHAHAHAHAHHAHAHAHA");
 
 
 
@@ -126,6 +126,7 @@ public class MainActivity extends AppCompatActivity {
 
             customTodayList.add(new ListItem(name, description, amount, calories, image));
         }
+
 
         ArrayAdapter<ListItem> adapter = new customTodayListAdapter(this, 0, customTodayList);
         lv.setAdapter(adapter);
