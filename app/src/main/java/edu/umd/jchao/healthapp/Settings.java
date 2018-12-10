@@ -31,7 +31,7 @@ public class Settings extends AppCompatActivity{
     private String[] biometrics;
     private static int cals = 2000;
     EditText heightFt, heightIn, weight, ageInput;
-    RadioButton male, female;
+    RadioButton male, female, lose, maintain, gain;
 
     //buncha public variables that should be accessed from the outside. There are getters and setters
     public static int heightCmOrFt = 0,
@@ -79,16 +79,30 @@ public class Settings extends AppCompatActivity{
         ageInput = findViewById(R.id.age);
         male = findViewById(R.id.male_button);
         female = findViewById(R.id.female_button);
+        lose = findViewById(R.id.lose_weight);
+        maintain = findViewById(R.id.maintain_weight);
+        gain = findViewById(R.id.gain_weight);
 
         Button save = findViewById(R.id.save_button);
+
         save.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("SetTextI18n")
             public void onClick(View v) {
                 if(getInput()) {
                     int theGender = Integer.parseInt(biometrics[3]);
+                    String lineChange = "maintain current";
                     cals = tdee(theGender, false);
-                    Tdee.setText(cals + "\ncalories to maintain current weight");
-                    //maxCals.setText(cals);
+
+                    if(lose.isChecked()){
+                        cals *= 0.88;
+                        lineChange = "lose";
+                    }
+                    else if(gain.isChecked()){
+                        cals *= 1.1;
+                        lineChange = "gain";
+                    }
+                    Tdee.setText("Consume "+ cals + "\ncalories to "+ lineChange +" weight");
+
                     writeCSV(biometrics, "Biometrics.csv");
                 }
                 else{
@@ -109,6 +123,7 @@ public class Settings extends AppCompatActivity{
         double height = Double.parseDouble(biometrics[0])*12 + Double.parseDouble(biometrics[1]);
         double weight = Double.parseDouble(biometrics[2]);
         int age = Integer.parseInt(biometrics[4]);
+        double ret;
 
         if(!metric) {
             height = (height*2.54);
@@ -116,11 +131,11 @@ public class Settings extends AppCompatActivity{
         }
 
         if(gender == 0) //male
-            return (int)((66+(13.7*weight)+(5*height)-(6.8*age)));
-            //return mf.getCheckedRadioButtonId();
+            ret = (66+(13.7*weight)+(5*height)-(6.8*age));
         else //female
-            return (int)((655+(9.6*weight)+(1.8*height)-4.7*age));
-            //return mf.getCheckedRadioButtonId();
+            ret = (655+(9.6*weight)+(1.8*height)-4.7*age);
+
+        return (int)ret;
     }
 
     private boolean getInput(){

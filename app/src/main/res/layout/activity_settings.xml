@@ -137,30 +137,94 @@
             </RadioGroup>
         </LinearLayout>
 
-        <Button
-            android:id="@+id/save_button"
-            android:layout_below="@id/genderAgeContainer"
+        <android.support.design.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:textColor="@color/colorPrimaryDark"
-            android:text="Calculate TDEE" />
+            android:id="@+id/weight_goals"
+            android:layout_below="@+id/genderAgeContainer">
+
+            <android.support.v7.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="8dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/goals_text"
+                    android:textAlignment="center"
+                    android:textSize="24sp"
+                    android:text="What are your weight goals?"/>
+
+                <RadioGroup
+                    android:id="@+id/weight_goal_selector"
+                    android:layout_width="match_parent"
+                    android:checkedButton="@id/lose_weight"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_marginLeft="32dp"
+                    android:layout_marginRight="32dp"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/lose_weight"
+                        android:text="Lose"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:fontFamily="@string/title_dashboard"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content" />
+
+                    <RadioButton
+                        android:id="@+id/maintain_weight"
+                        android:text="Maintain"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:fontFamily="@string/title_dashboard"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content" />
+
+                    <RadioButton
+                        android:id="@+id/gain_weight"
+                        android:text="Gain"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:fontFamily="@string/title_dashboard"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content" />
+
+                </RadioGroup>
+
+                <Button
+                    android:id="@+id/save_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:text="Calculate TDEE" />
+            </android.support.v7.widget.LinearLayoutCompat>
+
+
+
+        </android.support.design.card.MaterialCardView>
+
+
 
         <TextView
             android:id="@+id/TDEE_display"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/save_button"
+            android:layout_below="@id/weight_goals"
             android:layout_marginBottom="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
             android:text=""
             android:textAlignment="center"
-            android:textSize="30sp"
+            android:textSize="28sp"
             android:textStyle="bold" />
 
     </RelativeLayout>
