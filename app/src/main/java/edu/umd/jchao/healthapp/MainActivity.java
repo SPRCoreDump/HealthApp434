@@ -105,9 +105,6 @@ public class MainActivity extends AppCompatActivity {
         todayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, todayList);
 
 
-        //System.err.println("TESTING HAAHAHAHAHAHHAHAHAHA");
-
-
         for (String s : todayList) {
             String labels[] = s.split(",");
             String description = labels[1];
